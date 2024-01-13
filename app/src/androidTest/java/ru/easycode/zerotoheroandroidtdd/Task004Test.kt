@@ -3,11 +3,17 @@ package ru.easycode.zerotoheroandroidtdd
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasAnyChild
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.printToLog
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -29,7 +35,7 @@ class Task004Test {
         onView(
             allOf(
                 isAssignableFrom(TextView::class.java),
-                withId(R.id.titleTextView),
+                //withId(R.id.titleTextView),
                 withText("I am an Android Developer!"),
                 withParent(isAssignableFrom(LinearLayout::class.java))
             )
@@ -41,5 +47,34 @@ class Task004Test {
                 withParent(isAssignableFrom(LinearLayout::class.java))
             )
         ).check(matches(isDisplayed()))
+    }
+}
+
+@RunWith(AndroidJUnit4::class)
+class Task004TestCompose {
+
+    @get:Rule
+    val activityRule = createAndroidComposeRule<MainActivity>()
+
+    @Test
+    fun test_add_button() {
+        activityRule.onRoot(useUnmergedTree = true).printToLog("TERT")
+
+        activityRule
+            .onNode(
+                matcher = hasTestTag("column")
+                        and
+                        hasAnyChild(
+                            hasTestTag("mainTextView")
+                                    and
+                                    hasText("I am an Android Developer!")
+                        )
+                        and
+                        hasAnyChild(
+                            hasTestTag("button")
+                        ),
+                useUnmergedTree = true
+            )
+            .assertIsDisplayed()
     }
 }
