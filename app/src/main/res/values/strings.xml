@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ZeroToHeroAndroidTDD</string>
+    <string name="changeButton">change</string>
+    <string name="id_column">column</string>
+    <string name="id_text">text</string>
+    <string name="btn_caption">change</string>
+    <string name="id_changeButton">button</string>
 </resources>
