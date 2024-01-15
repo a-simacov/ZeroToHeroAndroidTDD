@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ZeroToHeroAndroidTDD</string>
+    <string name="id_column">column</string>
+    <string name="id_text">text</string>
+    <string name="id_remove_button">remove</string>
+    <string name="btn_remove_caption">remove</string>
+    <string name="hello_world">Hello World!</string>
 </resources>
