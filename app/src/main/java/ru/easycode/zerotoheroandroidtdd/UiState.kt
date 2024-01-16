@@ -8,13 +8,18 @@ interface UiState : Serializable {
 
     fun enabled(): Boolean
 
-    data class Base(
+    abstract class Abstract(
         private val text: String
     ) : UiState {
 
         override fun text(): String {
             return text
         }
+    }
+
+    data class Base(
+        private val text: String
+    ) : Abstract(text) {
 
         override fun enabled(): Boolean {
             return true
@@ -23,11 +28,7 @@ interface UiState : Serializable {
 
     data class Max(
         private val text: String
-    ) : UiState {
-
-        override fun text(): String {
-            return text
-        }
+    ) : Abstract(text) {
 
         override fun enabled(): Boolean {
             return false
