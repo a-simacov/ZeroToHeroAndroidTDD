@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ZeroToHeroAndroidTDD</string>
+    <string name="id_row">row</string>
+    <string name="id_text">text</string>
+    <string name="id_increment_button">increment</string>
+    <string name="btn_increment_caption">+</string>
+    <string name="id_decrement_button">decrement</string>
+    <string name="btn_decrement_caption">-</string>
 </resources>

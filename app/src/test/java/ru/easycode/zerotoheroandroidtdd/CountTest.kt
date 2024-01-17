@@ -106,11 +106,13 @@ class CountTest {
 
     @Test(expected = IllegalStateException::class)
     fun test_max_less_than_min() {
+        // Проблема 1 + исключение вызывается из-за того, что max = 0, а не max < min
         Count.Base(step = 5, max = 0, min = 1)
     }
 
     @Test
     fun test_max_less_than_min_message() {
+        // Проблема 1
         try {
             Count.Base(step = 5, max = 6, min = 7)
         } catch (e: Exception) {
@@ -118,3 +120,7 @@ class CountTest {
         }
     }
 }
+
+// Проблема 1
+// Если в реализации Count нет проверки на max > min с выбросом исключения,
+// то этот тест будет считаться как выполненным.
