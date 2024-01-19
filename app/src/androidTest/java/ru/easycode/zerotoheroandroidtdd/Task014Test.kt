@@ -123,8 +123,8 @@ class Task014TestCompose {
         btnLoad.assertIsNotEnabled()
         progress.assertIsDisplayed()
 
-        // Важно, таймаут устанавливать более, чем в 1.5 раза когда используется ожидание
-        rule.waitUntil(10000) {
+        // NOTE: Важно, таймаут устанавливать не менее, чем в 1.5 раза больше времени ожидания
+        rule.waitUntil(1200) {
             rule.onAllNodesWithTag(textTag).fetchSemanticsNodes().isNotEmpty()
         }
 

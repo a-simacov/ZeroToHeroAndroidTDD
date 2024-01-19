@@ -15,8 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,18 +39,59 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+private interface UiState : Serializable {
+
+    @Composable
+    fun Result()
+
+    fun enabled(): Boolean
+
+    abstract class Abstract : UiState {
+
+        override fun enabled(): Boolean = true
+    }
+
+    object Init : Abstract() {
+
+        @Composable
+        override fun Result() = Unit
+    }
+
+    object Loading : Abstract() {
+
+        @Composable
+        override fun Result() {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .addTag(id = R.string.id_progress),
+            )
+        }
+
+        override fun enabled(): Boolean = false
+    }
+
+    object Finished : Abstract() {
+
+        @Composable
+        override fun Result() {
+            Text(
+                text = "loading",
+                modifier = Modifier.addTag(id = R.string.id_text)
+            )
+        }
+    }
+}
+
 @Composable
 fun MainScreen() {
-    var showProgress by remember { mutableStateOf(false) }
-    var showResult by remember { mutableStateOf(false) }
+    var uiState: UiState by rememberSaveable { mutableStateOf(UiState.Init) }
 
     val coroutineScope = rememberCoroutineScope()
     val onClick: () -> Unit = {
         coroutineScope.launch {
-            showProgress = true
+            uiState = UiState.Loading
             delay(1000)
-            showProgress = false
-            showResult = true
+            uiState = UiState.Finished
         }
     }
 
@@ -60,23 +102,11 @@ fun MainScreen() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (showProgress) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .addTag(id = R.string.id_progress),
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-        }
-        if (showResult) {
-            Text(
-                text = "loading",
-                modifier = Modifier.addTag(id = R.string.id_text)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-        }
+        uiState.Result()
+        Spacer(modifier = Modifier.width(8.dp))
         Button(
             onClick = onClick,
-            enabled = !showProgress,
+            enabled = uiState.enabled(),
             modifier = Modifier.addTag(id = R.string.id_load_button)
         ) {
             Text(
