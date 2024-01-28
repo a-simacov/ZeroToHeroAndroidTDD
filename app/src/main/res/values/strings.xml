@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ZeroToHeroAndroidTDD</string>
+    <string name="rootLayout">column</string>
+    <string name="inputEditText">edit_text</string>
+    <string name="elementTextView">elementTextView</string>
+    <string name="titleTextView">text</string>
+    <string name="actionButton">button</string>
+    <string name="actionButtonCaption">create</string>
+    <string name="topLayout">top_layout</string>
+    <string name="contentLayout">content_layout</string>
 </resources>
